@@ -1,0 +1,10 @@
+import { Injectable } from '@nestjs/common';
+
+import { I__module__Service } from './interfaces/__module__(kebabCase).service.interface';
+
+@Injectable()
+export class __module__Service implements I__module__Service {
+  async _() {
+    //
+  }
+}

@@ -1,0 +1,14 @@
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
+import { __module__Service } from './__module__(kebabCase).service';
+
+@ApiTags('__module__(kebabCase)')
+@Controller('/__module__(kebabCase)')
+export class __module__Controller {
+  constructor(private readonly __module__(camelCase)Service: __module__Service) {}
+
+  async _() {
+    return this.__module__(camelCase)Service._();
+  }
+}
