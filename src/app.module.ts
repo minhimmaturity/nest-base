@@ -4,6 +4,9 @@ import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { UsersModule } from "./modules/users/users.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { JwtModule } from "@nestjs/jwt";
+import { authConfig } from "./configs";
 
 @Module({
   imports: [
@@ -21,6 +24,12 @@ import { UsersModule } from "./modules/users/users.module";
       synchronize: true,
       ssl: Boolean(process.env.DB_SSL), // run dev local connect to cloud database
     }),
+    JwtModule.register({
+      global: true,
+      secret: authConfig.jwtConstants.secret,
+      signOptions: { expiresIn: "1h" },
+    }),
+    AuthModule,
     UsersModule,
   ],
   controllers: [AppController],

@@ -13,7 +13,6 @@ generateTemplateFilesCommandLine([
     output: {
       path: "./src/modules/__module__(kebabCase)",
       pathAndFileNameDefaultCase: CaseConverterEnum.KebabCase,
-      overwrite: true,
     },
   },
 ]);

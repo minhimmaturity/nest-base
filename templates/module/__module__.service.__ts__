@@ -6,7 +6,7 @@ import { __module__ } from "./entities/__module__(kebabCase).entity";
 
 @Injectable()
 export class __module__Service extends TypeOrmCrudService<__module__>{
-  constructor(@InjectRepository(__module__) repo: Repository<__module__>) {
+  constructor(@InjectRepository(__module__) public repo: Repository<__module__>) {
     super(repo);
   }
 }
