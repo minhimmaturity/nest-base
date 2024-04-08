@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
-
-import { I__module__Service } from './interfaces/__module__(kebabCase).service.interface';
+import { TypeOrmCrudService } from "@dataui/crud-typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { __module__ } from "./entities/__module__(kebabCase).entity";
 
 @Injectable()
-export class __module__Service implements I__module__Service {
-  async _() {
-    //
+export class __module__Service extends TypeOrmCrudService<__module__>{
+  constructor(@InjectRepository(__module__) repo: Repository<__module__>) {
+    super(repo);
   }
 }

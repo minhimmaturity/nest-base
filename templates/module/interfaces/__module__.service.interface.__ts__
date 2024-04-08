@@ -1,3 +1,0 @@
-export interface I__module__Service {
-  _(): void;
-}

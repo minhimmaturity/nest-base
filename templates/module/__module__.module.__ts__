@@ -3,7 +3,12 @@ import { Module } from '@nestjs/common';
 import { __module__Controller } from './__module__(kebabCase).controller';
 import { __module__Service } from './__module__(kebabCase).service';
 
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { __module__ } from "./entities/__module__(kebabCase).entity";
+
+
 @Module({
+  imports: [TypeOrmModule.forFeature([__module__])],
   providers: [__module__Service],
   exports: [__module__Service],
   controllers: [__module__Controller],

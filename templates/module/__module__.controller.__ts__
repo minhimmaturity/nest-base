@@ -1,14 +1,15 @@
 import { Controller } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
 import { __module__Service } from './__module__(kebabCase).service';
+import { ControllerCrud } from "src/common/decorators/controller-crud.decorator";
+import { __module__ } from './entities/__module__(kebabCase).entity';
 
-@ApiTags('__module__(kebabCase)')
-@Controller('/__module__(kebabCase)')
+
+@ControllerCrud({
+  name: '__module__(kebabCase)',
+  entity: __module__,
+})
+
 export class __module__Controller {
-  constructor(private readonly __module__(camelCase)Service: __module__Service) {}
-
-  async _() {
-    return this.__module__(camelCase)Service._();
-  }
+  constructor(public service: __module__Service) {}
 }
