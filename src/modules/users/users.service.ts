@@ -9,8 +9,4 @@ export class UsersService extends TypeOrmCrudService<User> {
   constructor(@InjectRepository(User) public repo: Repository<User>) {
     super(repo);
   }
-
-  private async hashPassword(password: string): Promise<string> {
-    return password;
-  }
 }

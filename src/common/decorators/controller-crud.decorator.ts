@@ -1,8 +1,9 @@
 import { Crud } from "@dataui/crud";
-import { Controller, applyDecorators } from "@nestjs/common";
-import { ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { Controller, UseGuards, applyDecorators } from "@nestjs/common";
+import { ApiBearerAuth, ApiConsumes, ApiTags } from "@nestjs/swagger";
 import { crudConfig } from "src/configs"; // Assuming you have a valid import here
 import { IControllerCrudOptions } from "../type";
+import { AuthGuard } from "src/guards/auth.guard";
 
 export function ControllerCrud<T>(
   options: IControllerCrudOptions,
@@ -30,7 +31,8 @@ export function ControllerCrud<T>(
     ApiTags(name),
     Controller(name),
     ApiConsumes("application/json"),
+    UseGuards(AuthGuard),
+    ApiBearerAuth(),
   ];
-
   return applyDecorators(...decorators);
 }

@@ -52,19 +52,18 @@ export class AuthService {
   }
 
   /**
-   * A function that generates a login response object based on the user details.
+   * Generates a login response object based on the user details.
    *
    * @param {User} user - the user object containing email, id, name, and role
    * @return {object} an object containing token, refreshToken, email, id, name, and role
    */
   public async loginResponse(user: User) {
-    const { email, id, name, role } = user;
+    const { email, id, name } = user;
     const response = {
       token: this.jwtService.sign({
         email,
         id,
         name,
-        role,
       }),
       refreshToken: this.jwtService.sign({ id }, { expiresIn: "30d" }),
     };
@@ -74,7 +73,6 @@ export class AuthService {
       email,
       id,
       name,
-      role,
     };
   }
 }

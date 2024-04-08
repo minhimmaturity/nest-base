@@ -6,7 +6,7 @@ import { __module__ } from './entities/__module__(kebabCase).entity';
 
 
 @ControllerCrud({
-  name: '__module__(kebabCase)',
+  name: '__module__(kebabCase)s',
   entity: __module__,
 })
 
