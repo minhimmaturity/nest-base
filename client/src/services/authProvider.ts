@@ -5,9 +5,7 @@ import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from "react-admin";
 
 export default (type: string, params: any) => {
   if (type === AUTH_LOGIN) {
-    const { email, password } = params;
-    console.log(params, "params");
-    return loginRequest({ email, password });
+    return loginRequest(params);
   }
   if (type === AUTH_LOGOUT) {
     // ...

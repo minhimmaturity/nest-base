@@ -1,9 +1,17 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-import { LoginDto } from "./dto/auth.dto";
+import { AuthInitDto, LoginDto } from "./dto/auth.dto";
 import { UsersService } from "../users/users.service";
 import { User } from "../users/entities/user.entity";
+import { UserRole } from "../users/users.interface";
+import { nanoid } from "nanoid";
+import { Response } from "express";
+import dayjs from "dayjs";
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,12 +25,19 @@ export class AuthService {
    * @param {LoginDto} dto - the data transfer object containing email and password
    * @return {Promise<any>} the login response
    */
-  public async login(dto: LoginDto) {
-    const { email, password } = dto;
+  public async login(dto: LoginDto, res: Response) {
+    const { email, password, remember } = dto;
 
     const user = await this.verifyUserPassword(email, password);
 
-    return this.loginResponse(user);
+    const loginResponse = await this.loginResponse(user, remember);
+    res.cookie("token", loginResponse.token, {
+      expires: new Date(dayjs().add(1, "hour").unix() * 1000),
+      httpOnly: true,
+      secure: true,
+      domain: ".localhost",
+    });
+    return loginResponse;
   }
 
   /**
@@ -57,15 +72,15 @@ export class AuthService {
    * @param {User} user - the user object containing email, id, name, and role
    * @return {object} an object containing token, refreshToken, email, id, name, and role
    */
-  public async loginResponse(user: User) {
+  public async loginResponse(user: User, remember: boolean) {
     const { email, id, name } = user;
     const response = {
       token: this.jwtService.sign({
         email,
         id,
         name,
+        remember,
       }),
-      refreshToken: this.jwtService.sign({ id }, { expiresIn: "30d" }),
     };
 
     return {
@@ -73,6 +88,39 @@ export class AuthService {
       email,
       id,
       name,
+    };
+  }
+
+  /**
+   * Initializes the application by creating an admin user if the database is empty.
+   *
+   * @param {AuthInitDto} dto - the DTO containing the email of the admin user
+   * @return {object} an object containing the email and password of the admin user
+   */
+  public async authInit(
+    dto: AuthInitDto,
+  ): Promise<{ email: string; password: string }> {
+    const { email } = dto;
+
+    const userCount = await this.usersService.count({
+      where: {},
+    });
+
+    if (userCount > 0) {
+      throw new ForbiddenException("The application is already initialized.");
+    }
+
+    const password = nanoid();
+
+    await this.usersService.createUser({
+      email,
+      name: email.split("@")[0],
+      password,
+      role: UserRole.ADMIN,
+    });
+    return {
+      email,
+      password,
     };
   }
 }

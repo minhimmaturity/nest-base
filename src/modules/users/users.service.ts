@@ -23,12 +23,13 @@ export class UsersService extends TypeOrmCrudService<User> {
    * @throws {ConflictException} if the email is already in use
    */
   public async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
-    const { email, password, name } = dto;
+    const { email, password, name, role } = dto;
     const newUser = new User();
     newUser.email = email;
     const salt = await bcrypt.genSalt();
     newUser.password = await this.hashPassword(password, salt);
     newUser.name = name;
+    newUser.role = role;
 
     const check = await this.repo.count({
       where: {
