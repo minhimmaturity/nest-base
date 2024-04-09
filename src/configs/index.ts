@@ -1,4 +1,4 @@
-import authConfig from "./auth.guard";
+import authConfig from "./auth.config";
 import { crudConfig } from "./crud.config";
 
 export { crudConfig, authConfig };

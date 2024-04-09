@@ -7,6 +7,8 @@ import { UsersModule } from "./modules/users/users.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
 import { authConfig } from "./configs";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -23,6 +25,10 @@ import { authConfig } from "./configs";
       entities: [__dirname + "/**/*.entity.{js,ts}"],
       synchronize: true,
       ssl: Boolean(process.env.DB_SSL), // run dev local connect to cloud database
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public"),
+      exclude: ["/api*"],
     }),
     JwtModule.register({
       global: true,

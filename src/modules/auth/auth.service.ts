@@ -34,8 +34,8 @@ export class AuthService {
     res.cookie("token", loginResponse.token, {
       expires: new Date(dayjs().add(1, "hour").unix() * 1000),
       httpOnly: true,
-      secure: true,
-      domain: ".localhost",
+      // secure: true,
+      // domain: ".localhost:5173",
     });
     return loginResponse;
   }

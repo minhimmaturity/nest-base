@@ -8,6 +8,7 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
+import { Request } from "express";
 import { Observable } from "rxjs";
 import { authConfig } from "src/configs";
 const PUBLIC = "PUBLIC";
@@ -27,8 +28,7 @@ export class AuthGuard implements CanActivate {
 
   private async validateRequest(request: Request): Promise<boolean> {
     try {
-      const { headers } = request;
-      let token = headers["authorization"];
+      let token = request.cookies.token;
       if (!token) {
         return false;
       }

@@ -1,4 +1,4 @@
-import { Admin } from "react-admin";
+import { Admin, ListGuesser, Resource } from "react-admin";
 import dataProvider from "./services/dataProvider";
 import { createBrowserHistory } from "history";
 import { QueryClient } from "react-query";
@@ -20,5 +20,7 @@ export const App = () => (
     dataProvider={dataProvider}
     loginPage={Login}
     authProvider={authProvider}
-  ></Admin>
+  >
+    <Resource name="users" list={ListGuesser} />
+  </Admin>
 );

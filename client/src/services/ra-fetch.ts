@@ -1,16 +1,16 @@
 const raFetch = async (url: string, options: any = {}) => {
   const requestHeaders =
-    options.headers || new Headers({ Accept: 'application/json' });
+    options.headers || new Headers({ Accept: "application/json" });
   if (
-    !requestHeaders.has('Content-Type') &&
+    !requestHeaders.has("Content-Type") &&
     !(options && options.body && options.body instanceof FormData)
   ) {
-    requestHeaders.set('Content-Type', 'application/json');
+    requestHeaders.set("Content-Type", "application/json");
   }
   if (options.user && options.user.authenticated && options.user.token) {
-    requestHeaders.set('Authorization', options.user.token);
-    requestHeaders.set('Access-Control-Expose-Headers', 'Content-Range');
-    requestHeaders.set('Content-Range', 'bytes : 0-9/*');
+    requestHeaders.set("Authorization", options.user.token);
+    requestHeaders.set("Access-Control-Expose-Headers", "Content-Range");
+    requestHeaders.set("Content-Range", "bytes : 0-9/*");
   }
   const response = await fetch(url, { ...options, headers: requestHeaders });
   const text = await response.text();
@@ -44,7 +44,8 @@ const raFetch = async (url: string, options: any = {}) => {
 export default (url: string, options: any = {}) => {
   options.user = {
     authenticated: true,
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem("token"),
   };
+  console.log(url, options);
   return raFetch(url, options);
 };
