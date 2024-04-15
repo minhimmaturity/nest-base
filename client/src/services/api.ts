@@ -18,7 +18,6 @@ const API = axios.create({
 
 API.interceptors.request.use((config: any) => {
   config.headers.Authorization = localStorage.getItem("token");
-  console.log("hjah");
   return config;
 });
 

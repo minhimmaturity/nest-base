@@ -27,7 +27,6 @@ export class AuthService {
    * @return {Promise<any>} the login response
    */
   public async login(dto: LoginDto, req: Request, res: Response) {
-    console.log(req.headers.referer);
     const { email, password, remember } = dto;
     const user = await this.verifyUserPassword(email, password);
     return this.loginResponse(user, remember);
