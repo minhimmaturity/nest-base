@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
 
   private async validateRequest(request: Request): Promise<boolean> {
     try {
-      let token = request.cookies.token;
+      let token = request.headers.authorization;
       if (!token) {
         return false;
       }

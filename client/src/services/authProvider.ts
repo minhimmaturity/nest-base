@@ -5,7 +5,13 @@ import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from "react-admin";
 
 export default (type: string, params: any) => {
   if (type === AUTH_LOGIN) {
-    return loginRequest(params);
+    return loginRequest(params).then((res) => {
+      const token = res.data.token;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      return;
+    });
   }
   if (type === AUTH_LOGOUT) {
     // ...

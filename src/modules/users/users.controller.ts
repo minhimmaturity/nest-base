@@ -12,7 +12,6 @@ import { CreateUserDto } from "./dto/create-user.dto";
 })
 export class UsersController {
   constructor(public service: UsersService) {}
-
   @Override("createOneBase")
   createUser(@Body() dto: CreateUserDto) {
     return this.service.createUser(dto);

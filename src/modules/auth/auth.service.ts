@@ -10,8 +10,9 @@ import { UsersService } from "../users/users.service";
 import { User } from "../users/entities/user.entity";
 import { UserRole } from "../users/users.interface";
 import { nanoid } from "nanoid";
-import { Response } from "express";
+import { Request, Response } from "express";
 import dayjs from "dayjs";
+import getDomainFromUrl from "src/helper/getDomainFromUrl";
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,19 +26,11 @@ export class AuthService {
    * @param {LoginDto} dto - the data transfer object containing email and password
    * @return {Promise<any>} the login response
    */
-  public async login(dto: LoginDto, res: Response) {
+  public async login(dto: LoginDto, req: Request, res: Response) {
+    console.log(req.headers.referer);
     const { email, password, remember } = dto;
-
     const user = await this.verifyUserPassword(email, password);
-
-    const loginResponse = await this.loginResponse(user, remember);
-    res.cookie("token", loginResponse.token, {
-      expires: new Date(dayjs().add(1, "hour").unix() * 1000),
-      httpOnly: true,
-      // secure: true,
-      // domain: ".localhost:5173",
-    });
-    return loginResponse;
+    return this.loginResponse(user, remember);
   }
 
   /**

@@ -13,10 +13,12 @@ export const API_URL_STATIC = import.meta.env.DEV
 
 const API = axios.create({
   baseURL: `${API_URL}`,
+  withCredentials: true,
 });
 
 API.interceptors.request.use((config: any) => {
   config.headers.Authorization = localStorage.getItem("token");
+  console.log("hjah");
   return config;
 });
 

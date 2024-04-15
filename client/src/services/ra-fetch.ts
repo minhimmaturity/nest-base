@@ -46,6 +46,5 @@ export default (url: string, options: any = {}) => {
     authenticated: true,
     token: localStorage.getItem("token"),
   };
-  console.log(url, options);
   return raFetch(url, options);
 };
