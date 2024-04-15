@@ -9,6 +9,11 @@ import { CreateUserDto } from "./dto/create-user.dto";
 @ControllerCrud({
   name: "users",
   entity: User,
+  crud: {
+    query: {
+      exclude: ["password", "deleteAt"],
+    },
+  },
 })
 export class UsersController {
   constructor(public service: UsersService) {}
