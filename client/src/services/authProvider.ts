@@ -1,26 +1,37 @@
-import { LoginParams } from "../type";
-import { loginRequest } from "./api";
+import getPayloadDataToken from "../helper/getPayloadDataToken";
 
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from "react-admin";
-
-export default (type: string, params: any) => {
-  if (type === AUTH_LOGIN) {
-    return loginRequest(params).then((res) => {
-      const token = res.data.token;
-      if (token) {
-        localStorage.setItem("token", token);
-      }
-      return;
+const authProvider = {
+  login: ({ token }: { token: string }) => {
+    if (!token) {
+      return Promise.reject();
+    }
+    localStorage.setItem("token", token);
+    return Promise.resolve();
+  },
+  logout: () => {
+    localStorage.removeItem("token");
+    return Promise.resolve();
+  },
+  checkAuth: () =>
+    localStorage.getItem("token") ? Promise.resolve() : Promise.reject(),
+  checkError: (error: any) => {
+    const status = error.status;
+    if (status === 401 || status === 403) {
+      localStorage.removeItem("token");
+      return Promise.reject();
+    }
+    // other error code (404, 500, etc): no need to log out
+    return Promise.resolve();
+  },
+  getIdentity: () => {
+    const data = getPayloadDataToken();
+    const { id, name } = data;
+    return Promise.resolve({
+      id,
+      fullName: name,
     });
-  }
-  if (type === AUTH_LOGOUT) {
-    // ...
-  }
-  if (type === AUTH_ERROR) {
-    // ...
-  }
-  if (type === AUTH_CHECK) {
-    return localStorage.getItem("token") ? Promise.resolve() : Promise.reject();
-  }
-  return Promise.reject("Unknown method");
+  },
+  getPermissions: () => Promise.resolve(""),
 };
+
+export default authProvider;

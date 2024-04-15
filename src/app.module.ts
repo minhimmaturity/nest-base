@@ -33,7 +33,7 @@ import { join } from "path";
     JwtModule.register({
       global: true,
       secret: authConfig.jwtConstants.secret,
-      signOptions: { expiresIn: "1h" },
+      signOptions: { expiresIn: "24h" },
     }),
     AuthModule,
     UsersModule,

@@ -22,15 +22,19 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { loginRequest } from "../../services/api";
+import { LoginParams } from "../../type";
 const Login = () => {
   const login = useLogin();
   const location = useLocation();
-  const handleSubmit = (auth: FormValues) => {
-    login(auth, location.state ? (location.state as any).nextPathname : "/");
+  const handleSubmit = (auth: LoginParams) => {
+    loginRequest(auth).then((res) => {
+      login(res.data, location.state ? location.state.nextPathname : "/");
+    });
   };
 
   return (
-    <Form onSubmit={handleSubmit} noValidate>
+    <Form onSubmit={handleSubmit as any} noValidate>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
