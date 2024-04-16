@@ -14,7 +14,7 @@ async function bootstrap() {
   const user = process.env.SWAGGER_USER || "admin";
   const password = process.env.SWAGGER_PASSWORD || "admin";
   app.use(
-    "/api/docs",
+    "api/docs*",
     expressBasicAuth({
       challenge: true,
       users: { [user]: password },
@@ -40,7 +40,7 @@ async function bootstrap() {
     })
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api/docs", app, document);
+  SwaggerModule.setup("/api/docs", app, document);
   app.getHttpAdapter().getInstance().disable("x-powered-by");
   app.enableCors();
 

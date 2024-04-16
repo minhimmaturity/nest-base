@@ -1,12 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
-import { UsersModule } from "./modules/users/users.module";
-import { AuthModule } from "./modules/auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
 import { authConfig } from "./configs";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { CombineModule } from "./modules/combine.module";
 
 @Module({
   imports: [
@@ -33,8 +32,7 @@ import { join } from "path";
       secret: authConfig.jwtConstants.secret,
       signOptions: { expiresIn: "24h" },
     }),
-    AuthModule,
-    UsersModule,
+    CombineModule,
   ],
 })
 export class AppModule {}
